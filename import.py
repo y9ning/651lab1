@@ -18,8 +18,8 @@ def main():
     db.execute("CREATE TABLE reviews (isbn VARCHAR NOT NULL,username VARCHAR NOT NULL,review VARCHAR NOT NULL, rating INTEGER NOT NULL)")
 
     for isbn,title,author,year in reader:
-        if year == "year":
-            print('this is header')
+        if isbn == "isbn":
+            print('start create tables and insert books.csv')
         else:
             db.execute("INSERT INTO books (isbn, title, author, year) VALUES (:isbn,:title,:author,:year)",{"isbn":isbn,"title":title,"author":author,"year":year})
 
