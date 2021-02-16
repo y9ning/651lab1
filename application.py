@@ -27,10 +27,10 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/", methods=["GET","POST"])
 def index():
     username=session.get('username')
-    shorttext="=EMPTY"
+    shorttext="not search yet"
     session["books"]=[]
     if request.method=="POST":
-        shorttext=('not search yet')
+        shorttext=('')
         text=request.form.get('text')
         data=db.execute("SELECT * FROM books WHERE author iLIKE '%"+text+"%' OR title iLIKE '%"+text+"%' OR isbn iLIKE '%"+text+"%'").fetchall()
         for book in data:
