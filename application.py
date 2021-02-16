@@ -24,9 +24,20 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def index():
-    return "Now"
+    username=session.get('username')
+    shorttext="=EMPTY"
+    session["books"]=[]
+    if request.method=="POST":
+        shorttext=('not search yet')
+        text=request.form.get('text')
+        data=db.execute("SELECT * FROM books WHERE author iLIKE '%"+text+"%' OR title iLIKE '%"+text+"%' OR isbn iLIKE '%"+text+"%'").fetchall()
+        for book in data:
+            session['books'].append(book)
+        if len(session["books"])== 0:
+            shorttext=('No book found.')
+    return render_template("index.html",data=session['books'],shorttext=shorttext,username=username)
 
 
 @app.route("/login",methods=["GET","POST"])

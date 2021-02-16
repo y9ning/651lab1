@@ -6,7 +6,6 @@ Register & Log in
 {% endblock %}
 
 {% block body %}
-<div>{{notice}}</div>
 <div><a href="{{url_for('index')}}">Home</a></div>
     <div>
         <form action="{{url_for('login')}}" method="post">
@@ -24,4 +23,5 @@ Register & Log in
             <button>Log in</button>
         </form>
     </div>
+<div><h3>{{notice}}</h3></div>
 {% endblock %}

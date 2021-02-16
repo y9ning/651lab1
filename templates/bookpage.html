@@ -5,18 +5,19 @@ Book
 {% endblock %}
 
 <div><a href="{{url_for('index')}}">Home</a></div>
-<div >
-    <h1>{{data.title}}</h1>
+<div>
+    <h3>{{data.title}}</h3>
     <div>
-      <<ul>
-        Author:<h2> {{data.author}}</h2>
-        Isbn:<h2> {{data.isbn}}</h2>
-        Year:<h2> {{data.year}}</h2>
-      </ul>>
+      <ul>
+        <li>Author: {{data.author}}</li>
+        <li>Isbn: {{data.isbn}}</li>
+        <li>Year: {{data.year}}</li>
+      </ul>
     </div>
+
     <div>
         <h2>Rating from Google Books: </h2>
-        <h1>{{average_rating}}</h1>
+        {{average_rating}}
         <h5>Reviews: </h5>
     </div>
 </div>

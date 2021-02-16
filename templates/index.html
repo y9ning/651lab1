@@ -5,12 +5,24 @@
 <body>
     <div>
         <div><a href="{{url_for('index')}}">Home</a></div>
-        <div>{{username}}   <a href="{{url_for('logout')}}">   Log out</a></div>
+        <div>user:  {{username}}   <a href="{{url_for('logout')}}">   Log out</a></div>
     </div>
     <h1>Search for Books</h1>
     <form class="form-inline " action="{{url_for('index')}}" method="POST">
         <input class="form-control" type="text" name="text" placeholder="Search">
         <button type="submit">Search</button>
     </form>
+    <div>
+        <h3>{{shorttext}}</h3>
+
+        <div>
+            {% for book in data %}
+            <a href='/isbn/{{book.isbn}}'>
+                <h5>{{book.title}}</h5>
+                Written by {{book.author}} publised in {{book.year}}
+                 <h6>isbn: {{book.isbn}}</h6></a>
+
+            {% endfor %}
+        </div>
 </body>
 </html>
