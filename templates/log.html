@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Register & Log in
+{% endblock %}
+
+{% block body %}
+    <div>
+        <form action="{{url_for('log')}}" method="post">
+            <legend>Register</legend>
+            <input type="text"  name="username" placeholder= "Enter Username Here">
+            <input type="password" name="Password" placeholder= "Enter Password Here">
+            <button>Register</button>
+        </form>
+    </div>
+    <div>
+        <form action="{{url_for('log')}}"  method="post">
+            <legend>Log In</legend>
+            <input  name="emailLogIn" placeholder= "Enter Username Here" >
+            <input  type="password"  name="Password" placeholder= "Enter Password Here">
+            <button>Log in</button>
+        </form>
+    </div>
+{% endblock %}
