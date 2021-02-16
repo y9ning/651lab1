@@ -4,36 +4,53 @@
 Book
 {% endblock %}
 
+{% block body %}
 <div><a href="{{url_for('index')}}">Home</a></div>
 <div>
     <h3>{{data.title}}</h3>
     <div>
       <ul>
-        <li>Author: {{data.author}}</li>
-        <li>Isbn: {{data.isbn}}</li>
-        <li>Year: {{data.year}}</li>
+        <li> {{data.author}}</li>
+        <li> {{data.isbn}}</li>
+        <li> {{data.year}}</li>
       </ul>
     </div>
 
     <div>
-        <h2>Rating from Google Books: </h2>
+        <h3>Rating from Google Books: </h3>
         {{average_rating}}
         <h5>Reviews: </h5>
+        {{rating_count}}
     </div>
 </div>
 <div>
-    <form action="{{url_for('bookpage}}" method="POST">
+  <h3>Reviews given by registered users</h3>
+{% if all_reviews != None %}
+{% for reviewed in all_reviews %}
+<div>
+    <h4>Rating: {{reviewed.rating}}</h4>
+    <h5>{{reviewed.review}}</h5>     commented by      <h5>{{reviewed.username}}</h5>
+    <h6></h6>
+</div>
+{% endfor %}
+{% endif %}
+
+<div>
+    <form action="{{url_for('bookpage',isbn=data.isbn)}}" method="POST">
         <label>Reviews</label>
         <select name="ratings">
             <option selected value disabled>rate</option>
-            <option value="1">1.0/5.0</option>
-            <option value="2">2.0/5.0</option>
-            <option value="3">3.0/5.0</option>
-            <option value="4">4.0/5.0</option>
-            <option value="5">5.0/5.0</option>
+            <option value="1">1.0</option>
+            <option value="2">2.0</option>
+            <option value="3">3.0</option>
+            <option value="4">4.0</option>
+            <option value="5">5.0</option>
         </select>
-        <textarea class='form-control' name='textarea'>
+
+        <textarea  name='comments'>
         </textarea>
         <input type='submit' value='Submit'>
     </form>
 </div>
+<div>{{notice2}}</div>
+{% endblock %}

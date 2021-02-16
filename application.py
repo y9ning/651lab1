@@ -39,6 +39,28 @@ def index():
             shorttext=('No book found.')
     return render_template("index.html",data=session['books'],shorttext=shorttext,username=username)
 
+@app.route("/isbn/<string:isbn>",methods=["GET","POST"])
+def bookpage(isbn):
+    notice2=""
+    username=session.get('username')
+    session["reviews"]=[]
+    review=db.execute("SELECT * FROM reviews WHERE isbn = :isbn AND username= :username",{"isbn":isbn ,"username":username}).fetchone()
+    if request.method=="POST" and review==None:
+        reviewtext=request.form.get('comments')
+        rating=request.form.get('ratings')
+        db.execute("INSERT INTO reviews (isbn, review, rating, username) VALUES (:isbn,:review,:rating,:username)",{"isbn":isbn,"review":reviewtext,"rating":rating,"username":username})
+        db.commit()
+    if request.method=="POST" and review!=None:
+        notice2="one book/volume can only be reviewed once by a user."
+
+    res = requests.get("https://www.googleapis.com/books/v1/volumes", params={"q":isbn})
+    average_rating=res.json()["items"][0]["volumeInfo"]["averageRating"]
+    rating_count=res.json()["items"][0]["volumeInfo"]["ratingsCount"]
+    all_reviews=db.execute("SELECT * FROM reviews WHERE isbn = :isbn",{"isbn":isbn}).fetchall()
+    for reviewed in all_reviews:
+        session['reviews'].append(reviewed)
+    data=db.execute("SELECT * FROM books WHERE isbn = :isbn",{"isbn":isbn}).fetchone()
+    return render_template("bookpage.html",data=data,all_reviews=session['reviews'],average_rating=average_rating,rating_count=rating_count,username=username,notice2=notice2)
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -54,7 +76,7 @@ def login():
                 if data[user]["username"]==username:
                     notice="Username has been registered"
                     return render_template('login.html',notice=notice)
-            db.execute("INSERT INTO users (username,password) VALUES (:username,:password)",{"username":username,"password":password})
+            db.execute("INSERT INTO users (username,password) VALUES (:user,:pass)",{"user":username,"pass":password})
             db.commit()
             notice="registered."
         else:
