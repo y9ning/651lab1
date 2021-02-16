@@ -15,6 +15,8 @@ if not os.getenv("DATABASE_URL"):
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['JSON_SORT_KEYS'] = False
+
 Session(app)
 
 # Set up database
@@ -29,22 +31,22 @@ def index():
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-    notice=""
+    notice="notice text here"
     if request.method=="POST":
         username=request.form.get('username')
         password=request.form.get('password')
         userlog=request.form.get('userlog')
         passwordlog=request.form.get('passwordlog')
-        if userlog==None:                                  ## registration
+        if userlog==None:
             data=db.execute("SELECT username FROM users").fetchall()
-            for i in range(len(data)):
-                if data[i]["username"]==username:
+            for user in range(len(data)):
+                if data[user]["username"]==username:
                     notice="Username has been registered"
                     return render_template('login.html',notice=notice)
-            db.execute("INSERT INTO users (username,password) VALUES (:username,:password)",{"username":username,"passwod":password})
+            db.execute("INSERT INTO users (username,password) VALUES (:username,:password)",{"username":username,"password":password})
             db.commit()
-            notice="Success!."
-        else:                                                 ## registration
+            notice="registered."
+        else:
             data=db.execute("SELECT * FROM users WHERE username = :userlog",{"userlog":userlog}).fetchone()
             if data!=None:
                 if data.username==userlog and data.password==passwordlog:
