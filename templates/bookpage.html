@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Book
+{% endblock %}
+
+<div><a href="{{url_for('index')}}">Home</a></div>
+<div >
+    <h1>{{data.title}}</h1>
+    <div>
+      <<ul>
+        Author:<h2> {{data.author}}</h2>
+        Isbn:<h2> {{data.isbn}}</h2>
+        Year:<h2> {{data.year}}</h2>
+      </ul>>
+    </div>
+    <div>
+        <h2>Rating from Google Books: </h2>
+        <h1>{{average_rating}}</h1>
+        <h5>Reviews: </h5>
+    </div>
+</div>
+<div>
+    <form action="{{url_for('bookpage}}" method="POST">
+        <label>Reviews</label>
+        <select name="stars">
+            <option selected value disabled>rate</option>
+            <option value="1">1.0/5.0</option>
+            <option value="2">2.0/5.0</option>
+            <option value="3">3.0/5.0</option>
+            <option value="4">4.0/5.0</option>
+            <option value="5">5.0/5.0</option>
+        </select>
+        <textarea class='form-control' name='textarea'>
+        </textarea>
+        <input type='submit' value='Submit'>
+    </form>
+</div>
